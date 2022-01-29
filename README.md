@@ -16,7 +16,7 @@ I believe **everyone** should have the right to browse the web without worries o
 
 ![undraw_connected_world_wuay](https://user-images.githubusercontent.com/63175560/123716784-d6a4b080-d851-11eb-9c1d-f7fb3054f609.png)
 
-Source of image: [unDraw](https://undraw.co), a collection of open-source illustrations. I appreciate the work of Katerina Limpitsouni and Aggelos Gesoulis.
+Source: [unDraw](https://undraw.co), a collection of open-source illustrations. I appreciate the work of Katerina Limpitsouni and Aggelos Gesoulis.
 
 If you want to block ads and other hosts on Android, you can give a try to [AdAway](https://github.com/AdAway/adaway.github.io).
 
