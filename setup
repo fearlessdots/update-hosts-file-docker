@@ -80,12 +80,6 @@ grant_permissions()
 show_info "Program files will be installed in $PROGRAM_DIR"
 show_info "Executable will be installed in $EXEC_DIR"
 
-if [ -d $PROGRAM_DIR ]
-then
-	show_info "Program directory already exists in $PROGRAM_DIR. If you continue, everything inside of it will be overwritten."
-	rm -rf $PROGRAM_DIR
-fi
-
 installation
 
 # Finish program
