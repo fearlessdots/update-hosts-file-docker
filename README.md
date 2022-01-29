@@ -4,7 +4,7 @@
 src="https://www.docker.com/sites/default/files/d8/styles/role_icon/public/2019-07/Moby-logo.png?itok=sYH_JEaJ"
  width=25% height=25%>
 
-> For the non-Docker version, see [this](https://github.com/fearlessdots/update-hosts-file) repository. This Docker version is not necessarily the most secure method of running **`update-hosts-file`** and it is highly vunerable to errors since I just adapted (prone to errors) it from the non-Docker version.
+> For the non-Docker version, see [this](https://github.com/fearlessdots/update-hosts-file) repository. This Docker version is not necessarily the most secure method of running **`update-hosts-file`** and it is highly vunerable to errors since I adapted (prone to errors) it from the non-Docker version.
 
 Script to help update the /etc/hosts file using custom hosts file from the Web (e.g. [Steven Black' hosts file](https://github.com/StevenBlack/hosts/ )) and other user custom hosts files. This program was tested on Linux X86_64 platform running Ubuntu 20.04/21.04 and on Raspberry Pi 3 Model B+ running Raspberry Pi OS.
 
