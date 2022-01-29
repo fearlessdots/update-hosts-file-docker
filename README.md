@@ -75,14 +75,20 @@ This method of installation will always download the most updated repository.
 git clone https://github.com/fearlessdots/update-hosts-file-docker
 cd update-hosts-file-docker
 ```
-Once inside the cloned repository, build the image using any method you want (running **`Docker`** or **`docker-compose`**). The **`setup`** script will download the most recent release from the main repository (non-Docker version) inside the image and install the program.
+Once inside the cloned repository, build the image using any method you want (running **`Docker`** or **`docker-compose`**). The **`setup`** script will download the most recent release from the main repository (non-Docker version) inside the image. To finish the installation, create a container with this image:
+
+```shell
+docker run --name <container_name> -it -v /etc/hosts:/etc/hosts -v /etc/hostname:/etc/hostname:ro <image_name>
+```
+
+While using the container's shell, run **`/build/setup`** to start the installation. Once this process is finished, you can use the **`update-hosts-file`** normally. To use it, you will need to enter this container in interactive mode and run the commands you want (same commands used by the non-Docker version).
 
 # Upgrade
 
 > Before trying any of the methods below, update your local repository by running **`git pull`** to make sure all files are up-to-date.
 
 ## Method 1 - Rebuild the image
-To upgrade, you can build again the image.
+To upgrade, you can follow again the instructions in the section **`Installation`**.
 
 ## Method 2 - Run `update-hosts-file upgrade` inside the container
 Running **`update-hosts-file upgrade`** inside the container will upgrade the program to the latest version.
