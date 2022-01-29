@@ -75,6 +75,8 @@ Once inside the cloned repository, build the image using any method you want (ru
 
 # Upgrade
 
+> Before trying any of the methods below, update your local repository by running **`git pull`** to make sure all files are up-to-date.
+
 ## Method 1 - Rebuild the image
 To upgrade, you can build again the image.
 
