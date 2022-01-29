@@ -1,4 +1,8 @@
-# update-hosts-file (Linux-based platforms only) **`experimental`**
+# update-hosts-file-docker (Linux-based platforms only) **`experimental`**
+
+<img alt="Docker Logo"
+src="https://www.docker.com/sites/default/files/d8/styles/role_icon/public/2019-07/Moby-logo.png?itok=sYH_JEaJ"
+ width=25% height=25%>
 
 > For the non-Docker version, see [this](https://github.com/fearlessdots/update-hosts-file) repository. This Docker version is not necessarily the most secure method of running **`update-hosts-file`** and it is highly vunerable to errors since I just adapted (prone to errors) it from the non-Docker version.
 
