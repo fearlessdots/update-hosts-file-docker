@@ -1,5 +1,6 @@
-# update-hosts-file (Linux-based platforms only)
-### Available platforms: Linux x86_64 and Raspberry Pi
+# update-hosts-file (Linux-based platforms only) **`experimental`**
+
+> For the non-Docker version, see [this](https://github.com/fearlessdots/update-hosts-file) repository. This Docker version is not necessarily the most secure method of running **`update-hosts-file`** and it is highly vunerable to errors since I just adapted (prone to errors) it from the non-Docker version.
 
 Script to help update the /etc/hosts file using custom hosts file from the Web (e.g. [Steven Black' hosts file](https://github.com/StevenBlack/hosts/ )) and other user custom hosts files. This program was tested on Linux X86_64 platform running Ubuntu 20.04/21.04 and on Raspberry Pi 3 Model B+ running Raspberry Pi OS.
 
@@ -62,39 +63,40 @@ Run `update-hosts-file help` to display valid arguments.
 You can change the program's default values (e.g., default text editor and viewer) by modifying `/config/preferences` file. By default, 'nano' is used as the editor and 'less' as the viewer (view/edit feature was added on version 1.2). All features can be found in this file. Give it a look! Features from future releases will be inserted in this file as soon as they are released.
 
 # Installation
-During the installation process, you can choose whether you want to backup your current modules directory `/modules` and preferences file `/config/preferences` or just install fresh program files and executables (scripts).
 
-## Method 1 - Clone The Repository With GIT And Run
-This method of installation will always download the most updated repository, but there is no guarantee of stability.
+## Method 1 - Clone The Repository With GIT And Build a Docker Image
+This method of installation will always download the most updated repository.
 
 ```bash
-git clone https://github.com/fearlessdots/update-hosts-file
-cd update-hosts-file
-chmod +x install
-sudo ./install
+git clone https://github.com/fearlessdots/update-hosts-file-docker
+cd update-hosts-file-docker
 ```
-**Attention:** by default, the executable will be installed in /usr/bin and the other configuration files in /usr/share/update-hosts-file. You can change this (not recommended) by modifying the variable values inside the installation script.
-
-## Method 2 - Download ZIP File And Run
-This method of installation will always download the most recent release (sometimes outdated in comparison with the GIT repository). Downloading the most recent releases may be more stable than downloading the repository.
-
-Use the command you prefer, e.g. wget or curl. Running wget:
-```bash
-wget https://github.com/fearlessdots/update-hosts-file/archive/refs/heads/main-x86_64.zip
-unzip main-x86_64.zip
-cd update-hosts-file-main-x86_64
-chmod +x install
-sudo ./install
-```
-**Attention:** by default, the executable will be installed in /usr/bin and the other configuration files in /usr/share/update-hosts-file. You can change this (not recommended) by modifying the variable values inside the installation script.
+Once inside the cloned repository, build the image using any method you want (running **`Docker`** or **`docker-compose`**). The **`setup`** script will download the most recent release from the main repository (non-Docker version) inside the image and install the program.
 
 # Upgrade
 
-## Method 1 - Run the `install` script
-To upgrade, download the files found in this repository using any of the methods of installation and, once inside the downloaded directory, run `sudo ./install`.
+## Method 1 - Rebuild the image
+To upgrade, you can build again the image.
 
-## Method 2 - Run `update-hosts-file upgrade`
-This method is available since version 1.5. It first verifies if any newer version is available (compared to the one installed on your computer) and, if you accept, it downloads the zip file for the most recent version and run the `install` script found inside of it. It is possible to automate this process to make it run the `upgrade`script every time you issue the command `update-hosts-file update` (this automation is enabled by default). For more information, view the `preferences` file located in the configuration directory.
+## Method 2 - Run `update-hosts-file upgrade` inside the container
+Running **`update-hosts-file upgrade`** inside the container will upgrade the program to the latest version.
+
+# Running the container
+
+To start a container with the **`update-hosts-file`** image, you can run:
+
+```shell
+docker run --rm -it -v /etc/hosts:/etc/hosts -v /etc/hostname:/etc/hostname:ro <image_name>
+```
+
+Optionally, you can mount a volume to the container to make the program files persist during container manipulation (e.g. container removal or image update). For example:
+
+```shell
+docker run --rm -it -v /etc/hosts:/etc/hosts -v /etc/hostname:/etc/hostname:ro -v /usr/share/update-hosts-file:/usr/share/update-hosts-file <image_name>
+```
+
+To use the **`update-hosts-file`** command, run it inside the container in interactive mode with the **-it** option (just like shown above).
+
 
 # License
 The update-hosts-file software is released under the GNU General Public License Version 2.0 (GPL-2.0).
