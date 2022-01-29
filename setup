@@ -1,0 +1,93 @@
+#!/bin/bash
+
+# Warning: changing the values of the variables in this script may render it unworkable.
+
+BRANCH=main-x86_64
+
+# The values below refer to the installation directories. If needed to change them,
+# do it cautiously.
+BUILD_DIR=/build # Directory inside Docker image
+
+PROGRAM_DIR=/usr/share/update-hosts-file
+EXEC_DIR=/usr/bin
+MODULES_DIR=$PROGRAM_DIR/modules
+CUSTOM_MODULES_DIR=$MODULES_DIR/custom
+WEB_MODULES_DIR=$MODULES_DIR/web
+CONFIG_DIR=$PROGRAM_DIR/config
+BACKUP_DIR=$PROGRAM_DIR/backup
+HOSTS_FILE=/etc/hosts
+
+# Shell display functions
+show_info(){
+	echo "[  UpdateHostsFileDocker  ] $1"
+}
+
+show_attention(){
+	echo "[ ATTENTION ] $1"
+}
+
+finish_program()
+{
+	# $1 is the exit code
+	exit $1
+}
+
+# Main functions
+installation()
+{
+	cd $BUILD_DIR
+	# Download and extract the latest release from the main repository
+	wget https://github.com/fearlessdots/update-hosts-file/archive/refs/heads/$BRANCH.zip
+	unzip $BRANCH.zip
+	sleep 2
+	rm $BRANCH.zip
+	# Rename extracted folder
+	mv update-hosts-file-$BRANCH release
+	# Move executable to $EXEC_DIR
+	cp release/bin/update-hosts-file $EXEC_DIR/update-hosts-file
+	# Create program directory at $PROGRAM_DIR
+	mkdir $PROGRAM_DIR
+	# Move all files and directories remaining to $PROGRAM_DIR
+	cp -R release/* $PROGRAM_DIR
+	# Create remaining directories
+	mkdir $PROGRAM_DIR/backup $PROGRAM_DIR/modules/web/enabled $PROGRAM_DIR/modules/custom/enabled
+	# Enable default modules using hard links (available => enabled)
+	show_info "Enabling Steven Black's hosts file web module"
+	ln $PROGRAM_DIR/modules/web/available/stevenblack-fakenews-gambling-porn $PROGRAM_DIR/modules/web/enabled
+	# Remove installation script
+	rm $PROGRAM_DIR/install
+	# Grant permissions
+	grant_permissions
+}
+
+grant_permissions()
+{
+	# Change owner to root
+	chown -R root:root $PROGRAM_DIR $EXEC_DIR/update-hosts-file
+	# Change permissions bits for executables
+	chmod -R 755 $EXEC_DIR/update-hosts-file $PROGRAM_DIR/bin $PROGRAM_DIR/install 2> /dev/null
+	# Change permissions for directories
+	chmod 755 $PROGRAM_DIR/backup $PROGRAM_DIR/config $PROGRAM_DIR/modules $PROGRAM_DIR/modules/custom $PROGRAM_DIR/modules/custom/available $PROGRAM_DIR/modules/custom/enabled $PROGRAM_DIR/modules/web $PROGRAM_DIR/modules/web/available $PROGRAM_DIR/modules/web/enabled 2> /dev/null
+	# Change permissions bits for files inside directories (backup, config, custom)
+	# and other files (LICENSE and README.md)
+	chmod 644 $PROGRAM_DIR/backup/* $PROGRAM_DIR/config/* $PROGRAM_DIR/modules/custom/available/* $PROGRAM_DIR/modules/custom/enabled/* $PROGRAM_DIR/modules/web/available/* $PROGRAM_DIR/modules/web/enabled/* $PROGRAM_DIR/LICENSE $PROGRAM_DIR/README.md 2> /dev/null
+}
+
+#
+##
+#
+
+show_info "Program files will be installed in $PROGRAM_DIR"
+show_info "Executable will be installed in $EXEC_DIR"
+
+if [ -d $PROGRAM_DIR ]
+then
+	show_info "Program directory already exists in $PROGRAM_DIR. If you continue, everything inside of it will be overwritten."
+	rm -rf $PROGRAM_DIR
+fi
+
+installation
+
+# Finish program
+show_info "Executable installed in $EXEC_DIR and configuration files in $PROGRAM_DIR"
+finish_program 0
